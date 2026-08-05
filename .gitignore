@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ### AL ###
 #Template for AL projects for Dynamics 365 Business Central
 #launch.json folder
@@ -21,3 +22,24 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+=======
+# Python environment and caches
+.venv/
+__pycache__/
+*.py[cod]
+
+# React dependencies and build output
+frontend/node_modules/
+frontend/dist/
+
+# Local biometric data — never publish this to GitHub
+data/*.db
+assets/unknown_snapshots/*
+!assets/unknown_snapshots/.gitkeep
+
+# Editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+>>>>>>> 64c012a (Initial commit for Smart Corridor attendance system)
