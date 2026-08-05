@@ -1,41 +1,150 @@
-<<<<<<< HEAD
-# smart-corridor-attendance
-Smart Corridor is a local laptop-based face recognition attendance system for schools. It uses Python, OpenCV, face_recognition, SQLite, and a Streamlit dashboard to register students, recognize faces through a webcam, and manage attendance with safe manual review for unknown faces.
-=======
-# Smart Corridor — Face Recognition Attendance System
+# Smart Corridor - Face Recognition Attendance System
 
-Smart Corridor is a local, laptop-based biometric attendance MVP for one school entrance. A React dashboard captures webcam frames, a Python API evaluates face matches, and SQLite stores attendance locally.
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/React-Frontend-61DAFB)](https://react.dev/)
+[![SQLite](https://img.shields.io/badge/SQLite-Local%20DB-003B57)](https://www.sqlite.org/)
+[![OpenCV](https://img.shields.io/badge/OpenCV-Vision-5C3EE8)](https://opencv.org/)
+
+Smart Corridor is a local laptop-based attendance MVP for one school entrance or corridor camera. A React dashboard captures webcam frames, a Python API performs face matching, and SQLite stores student and attendance records on the same laptop.
+
+This project does not claim perfect face recognition accuracy. If the match is not safe, the system shows `Unknown / Manual Review` and does not mark attendance.
 
 ## Features
 
-- Student registration with name, roll number, class/division, and webcam face capture.
-- Local face-embedding storage and safe matching.
-- One live laptop-webcam recognition flow.
-- Attendance once per student per day, with Present or Late status.
-- Configurable school start time and optional grace period; late records include minutes late.
-- Unknown / Manual Review for unsafe matches, with no automatic attendance.
-- Dashboard, attendance search, and unknown-event review.
+- Register students with name, roll number, class/division, and webcam face capture.
+- Store face embeddings locally in SQLite.
+- Recognize students from one laptop webcam flow.
+- Mark attendance only once per student per day.
+- Mark `Present` or `Late` using configurable school timing.
+- Store late minutes for attendance reports.
+- Show unknown-person events for manual review.
+- Search attendance reports and export visible report rows to CSV.
 
-## Technology
+## Architecture
 
-- React and Vite
-- Python and FastAPI
-- OpenCV and face_recognition
+```mermaid
+flowchart LR
+  Camera[Laptop webcam] --> Frontend[React dashboard]
+  Frontend --> API[FastAPI backend]
+  API --> Vision[OpenCV and face_recognition]
+  Vision --> API
+  API --> Database[(SQLite database)]
+  Database --> API
+  API --> Frontend
+```
+
+## Tech Stack
+
+- Python
+- FastAPI
+- OpenCV
+- face_recognition
 - SQLite
+- React
+- Vite
 
-## Run the backend
+## Project Structure
 
-From `backend`, run `..\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000`.
+```text
+Smart Corridor/
+|-- backend/
+|   |-- app/
+|   |-- requirements.txt
+|-- frontend/
+|   |-- src/
+|   |-- package.json
+|-- assets/
+|   |-- unknown_snapshots/
+|-- data/
+|-- .env.example
+|-- .gitignore
+|-- README.md
+|-- SECURITY.md
+```
 
-### Attendance timing
+## Database Tables
 
-The default school start time is `08:00`. A student recognized after that time is marked `Late`; the stored `late_minutes` value shows how many minutes after the start time they arrived. Set `SMART_CORRIDOR_SCHOOL_START` and `SMART_CORRIDOR_LATE_GRACE_MINUTES` before starting the backend when your school schedule changes.
+- `students`: student profile details.
+- `face_embeddings`: saved biometric face embeddings.
+- `attendance`: attendance date, entry time, status, and late minutes.
+- `unknown_events`: faces that were detected but not safely recognized.
 
-## Run the frontend
+## Local Setup
 
-From `frontend`, run `npm.cmd run dev`, then open `http://localhost:5173`.
+Create a virtual environment:
 
-## Important privacy note
+```powershell
+cd "C:\Projects - Building\Face Recognititon"
+python -m venv .venv
+```
 
-Face recognition is probabilistic; it does not claim perfect accuracy. The project uses a conservative threshold and never marks attendance for an unsafe match. The database and unknown snapshots are ignored by Git. Do not upload real student biometric data to a public repository.
->>>>>>> 64c012a (Initial commit for Smart Corridor attendance system)
+Install backend packages:
+
+```powershell
+cd "C:\Projects - Building\Face Recognititon\backend"
+..\.venv\Scripts\python.exe -m pip install --upgrade pip
+..\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+Install frontend packages:
+
+```powershell
+cd "C:\Projects - Building\Face Recognititon\frontend"
+npm install
+```
+
+## Run Locally
+
+Start the backend:
+
+```powershell
+cd "C:\Projects - Building\Face Recognititon\backend"
+..\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+
+Start the frontend:
+
+```powershell
+cd "C:\Projects - Building\Face Recognititon\frontend"
+npm run dev
+```
+
+Open the dashboard:
+
+```text
+http://localhost:5173
+```
+
+Backend health check:
+
+```text
+http://127.0.0.1:8000/api/health
+```
+
+## Configuration
+
+The default school start time is `08:00`.
+
+```env
+SMART_CORRIDOR_SCHOOL_START=08:00
+SMART_CORRIDOR_LATE_GRACE_MINUTES=0
+```
+
+- `SMART_CORRIDOR_SCHOOL_START`: official entry time in `HH:MM` format.
+- `SMART_CORRIDOR_LATE_GRACE_MINUTES`: optional grace period before a student is marked late.
+
+## Privacy Notes
+
+Keep this project local when using real student data.
+
+- Do not push the SQLite database to GitHub.
+- Do not push unknown-person snapshots to GitHub.
+- Do not store real face embeddings in a public repository.
+- Do not use the system as the only proof of attendance without human review.
+
+See [SECURITY.md](SECURITY.md) for more notes.
+
+## Project Status
+
+This is a college MVP and local prototype. It is ready for demo use on one laptop with one webcam, after registering test students locally.

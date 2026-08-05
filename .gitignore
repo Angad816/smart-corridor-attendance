@@ -1,45 +1,25 @@
-<<<<<<< HEAD
-### AL ###
-#Template for AL projects for Dynamics 365 Business Central
-#launch.json folder
-.vscode/
-#Cache folder
-.alcache/
-#Symbols folder
-.alpackages/
-#Snapshots folder
-.snapshots/
-#Testing Output folder
-.output/
-#Extension App-file
-*.app
-#Rapid Application Development File
-rad.json
-#Translation Base-file
-*.g.xlf
-#License-files
-*.bclicense
-*.flf
-#Test results file
-TestResults.xml
-=======
 # Python environment and caches
 .venv/
 __pycache__/
 *.py[cod]
+.pytest_cache/
 
 # React dependencies and build output
 frontend/node_modules/
 frontend/dist/
 
-# Local biometric data — never publish this to GitHub
+# Local biometric data - never publish this to GitHub
 data/*.db
 assets/unknown_snapshots/*
 !assets/unknown_snapshots/.gitkeep
+
+# Environment files
+.env
+backend/.env
+frontend/.env
 
 # Editor and operating-system files
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
->>>>>>> 64c012a (Initial commit for Smart Corridor attendance system)
